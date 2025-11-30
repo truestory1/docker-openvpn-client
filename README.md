@@ -125,4 +125,4 @@ This will tell OpenVPN to read `credentials.txt` whenever it needs credentials.
 
 
 ## Fork
-this is a fork of truestory1 project
+this is a fork of https://github.com/wfg/docker-openvpn-client

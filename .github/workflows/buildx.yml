@@ -1,0 +1,80 @@
+name: buildx
+
+on:
+  workflow_dispatch:
+  # pull_request:
+  push:
+    branches:
+      - 'master'
+
+env:
+  PLATFORMS: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
+  REGISTRY: ghcr.io
+  IMAGE_NAME: truestory1/openvpn-client
+
+jobs:
+  buildx:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3
+
+      # - name: Set up variable repository name
+      #   run: echo "IMAGE_NAME=${{ github.repository }}" >> $GITHUB_ENV
+
+      - name: Initial image build
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
+        with:
+          context: .
+          file: build/Dockerfile
+          tags: ${{ env.IMAGE_NAME }}:testing
+          platforms: ${{ env.PLATFORMS }}
+          provenance: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Load Built Image and Get Variables
+        id: vars
+        run: |
+          docker buildx build \
+            -f Containerfile \
+            -t ${{ env.IMAGE_NAME }}:testing \
+            --platform=linux/amd64 \
+            --cache-to type=gha,mode=max \
+            --cache-from type=gha \
+            --load \
+            .
+          docker run -d ${{ env.IMAGE_NAME }}:testing
+          CID=$(docker run -d ${{ env.IMAGE_NAME }}:testing sleep 9999)
+          echo "CID=$CID"
+          VER_FULL=$(docker exec $CID date +"%Y.%m.%d")
+          echo "VER_FULL=$VER_FULL"
+          docker rm -f $CID
+          echo "VER_FULL=$VER_FULL" >> $GITHUB_ENV
+
+      - name: Image registry login
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Buildx and Push
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6
+        with:
+          context: .
+          file: build/Dockerfile
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VER_FULL }}
+          platforms: ${{ env.PLATFORMS }}
+          provenance: false
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

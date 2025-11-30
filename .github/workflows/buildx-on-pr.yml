@@ -7,7 +7,7 @@ on:
 env:
   PLATFORMS: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
   REGISTRY: ghcr.io
-  IMAGE_NAME: "truestory1/openvpn-client"
+  IMAGE_NAME: truestory1/openvpn-client
 
 jobs:
   buildx-on-pr:

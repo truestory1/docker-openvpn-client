@@ -58,10 +58,11 @@ jobs:
           context: ./build
           file: ./build/Dockerfile
           tags: |
-            # ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VER_FULL }}
           platforms: ${{ env.PLATFORMS }}
           provenance: false
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          # tags: |
+            # ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest

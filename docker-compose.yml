@@ -1,6 +1,6 @@
 services:
   openvpn-client:
-    image: ghcr.io/truestory1/openvpn-client:latest
+    image: ghcr.io/truestory1/openvpn-client:latest@sha256:99dc874bfab770fed67810d580ffa563aec3e9b26ceb0dbe1c073e1f2c1f6cb8
     container_name: openvpn-client
     cap_add:
       - NET_ADMIN

@@ -45,10 +45,10 @@ jobs:
           file: ./build/Dockerfile
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VER_FULL }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           platforms: ${{ env.PLATFORMS }}
           provenance: false
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
           # tags: |
-            # ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest

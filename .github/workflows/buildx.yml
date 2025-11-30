@@ -42,8 +42,9 @@ jobs:
       - name: Load Built Image and Get Variables
         id: vars
         run: |
+          cd build
           docker buildx build \
-            -f build/Dockerfile \
+            -f Dockerfile \
             -t ${{ env.IMAGE_NAME }}:testing \
             --platform=linux/amd64 \
             --cache-to type=gha,mode=max \

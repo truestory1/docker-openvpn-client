@@ -47,8 +47,6 @@ jobs:
             -f Dockerfile \
             -t ${{ env.IMAGE_NAME }}:testing \
             --platform=linux/amd64 \
-            --cache-to type=gha,mode=max \
-            --cache-from type=gha \
             --load \
             .
           docker run -d ${{ env.IMAGE_NAME }}:testing
@@ -58,6 +56,10 @@ jobs:
           echo "VER_FULL=$VER_FULL"
           docker rm -f $CID
           echo "VER_FULL=$VER_FULL" >> $GITHUB_ENV
+
+            # --cache-to type=gha,mode=max \
+            # --cache-from type=gha \
+
 
       - name: Image registry login
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3

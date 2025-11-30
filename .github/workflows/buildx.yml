@@ -42,15 +42,15 @@ jobs:
       - name: Load Built Image and Get Variables
         id: vars
         run: |
-          cd build
-          docker buildx build \
-            -f Dockerfile \
-            -t ${{ env.IMAGE_NAME }}:testing \
-            --platform=linux/amd64 \
-            --cache-to type=gha,mode=max \
-            --cache-from type=gha \
-            --load \
-            .
+          # cd build
+          # docker buildx build \
+          #   -f Dockerfile \
+          #   -t ${{ env.IMAGE_NAME }}:testing \
+          #   --platform=linux/amd64 \
+          #   --cache-to type=gha,mode=max \
+          #   --cache-from type=gha \
+          #   --load \
+          #   .
           docker run -d ${{ env.IMAGE_NAME }}:testing
           CID=$(docker run -d ${{ env.IMAGE_NAME }}:testing sleep 9999)
           echo "CID=$CID"

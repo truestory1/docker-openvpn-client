@@ -20,5 +20,14 @@
       ],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     }
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": [
+        "docker-compose"
+      ],
+      "enabled": false
+    }
   ]
+
 }

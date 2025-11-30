@@ -23,9 +23,8 @@
   ],
   "packageRules": [
     {
-      "matchDatasources": [
-        "docker-compose"
-      ],
+      "matchManagers": ["docker-compose"],
+      "matchPackageNames": ["ghcr.io/truestory1/openvpn-client"],
       "enabled": false
     }
   ]

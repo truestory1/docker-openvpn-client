@@ -21,7 +21,8 @@ RUN set -ex \
         openvpn${OPENVPN_VERSION:+=$OPENVPN_VERSION} \
     && rm -rf /var/cache/apk/*  # Clean up cache to reduce layer size
 
-COPY . /usr/local/bin
+COPY ./build/killswitch.sh /usr/local/bin
+COPY ./build/entry.sh /usr/local/bin
 
 ENV KILL_SWITCH=on
 
